@@ -1,1216 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sprinkler Modification Work Permit</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<title>Sprinkler Modification Work Permit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background: #0d6a4e;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 850px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .header {
-            background: linear-gradient(90deg, #0d6a4e 0%, #0a8a66 100%);
-            color: white;
-            padding: 25px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .header .subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .form-container {
-            padding: 30px;
-        }
-
-        .section {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .section-title {
-            color: #0d6a4e;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            font-size: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        input, select {
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #0d6a4e;
-            box-shadow: 0 0 0 3px rgba(13, 106, 78, 0.1);
-        }
-
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #0d6a4e;
-        }
-
-        .note-section {
-            background: #f0f9f5;
-            border-left: 4px solid #0d6a4e;
-            padding: 15px;
-            border-radius: 0 8px 8px 0;
-            margin: 20px 0;
-        }
-
-        .note-section h3 {
-            color: #0d6a4e;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .note-section ul {
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .note-section li {
-            margin-bottom: 8px;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .advisory-checkbox {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-top: 15px;
-            padding: 10px;
-            background: #f0f9f5;
-            border-radius: 8px;
-        }
-
-        .signature-section {
-            text-align: center;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .signature-title {
-            color: #0d6a4e;
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .signature-preview {
-            width: 300px;
-            height: 100px;
-            margin: 15px auto;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            position: relative;
-        }
-
-        .signature-preview.has-signature {
-            border-color: #0d6a4e;
-            background: #f0f9f5;
-        }
-
-        .signature-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        .signature-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        .btn-signature {
-            background: linear-gradient(90deg, #0d6a4e 0%, #0a8a66 100%);
-            color: white;
-        }
-
-        .btn-signature:hover {
-            background: linear-gradient(90deg, #0a8a66 0%, #087053 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(13, 106, 78, 0.3);
-        }
-
-        .btn-clear {
-            background: #94a3b8;
-            color: white;
-        }
-
-        .btn-clear:hover {
-            background: #64748b;
-        }
-
-        .btn-submit {
-            background: linear-gradient(90deg, #0d6a4e 0%, #0a8a66 100%);
-            color: white;
-            font-size: 16px;
-            padding: 14px 35px;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(13, 106, 78, 0.3);
-        }
-
-        .btn-submit:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #0d6a4e;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-            color: #0d6a4e;
-            background: #f0f9f5;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .success-message i {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: none;
-            border-left: 4px solid #dc2626;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            background: linear-gradient(90deg, #0d6a4e 0%, #0a8a66 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px 15px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h2 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.3s;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .signature-instruction {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .signature-modal-pad {
-            width: 100%;
-            height: 200px;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            background: white;
-            cursor: crosshair;
-            margin-bottom: 20px;
-            touch-action: none;
-        }
-
-        .modal-controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn-modal {
-            padding: 12px 25px;
-            min-width: 120px;
-        }
-
-        .btn-save {
-            background: linear-gradient(90deg, #0d6a4e 0%, #0a8a66 100%);
-            color: white;
-        }
-
-        .btn-save:hover {
-            background: linear-gradient(90deg, #0a8a66 0%, #087053 100%);
-        }
-
-        .btn-cancel {
-            background: #dc2626;
-            color: white;
-        }
-
-        .btn-cancel:hover {
-            background: #b91c1c;
-        }
-
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .checkbox-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .container {
-                margin: 10px;
-            }
-            
-            .modal-content {
-                width: 95%;
-            }
-            
-            .signature-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 250px;
-                justify-content: center;
-            }
-        }
-    </style>
+<style>
+:root{
+  --primary:#003f2d;
+  --border:#cfd8d5;
+}
+body{
+  margin:0;
+  font-family:"Segoe UI", Arial, sans-serif;
+  background:#f4f7f6;
+  padding:24px;
+}
+.container{
+  max-width:1000px;
+  margin:auto;
+  background:#fff;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  overflow:hidden;
+}
+.header{
+  background:var(--primary);
+  color:#fff;
+  padding:26px 32px;
+}
+.header h1{margin:0;font-size:26px}
+.content{padding:30px 32px}
+.section{margin-bottom:30px}
+.section-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--primary);
+  border-bottom:2px solid #e6f2ef;
+  padding-bottom:6px;
+  margin-bottom:16px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+label{font-size:13px;font-weight:600}
+input,select{
+  width:100%;
+  height:42px;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:5px;
+}
+input[readonly]{background:#f8fafc;font-weight:600}
+.checkbox{
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+}
+.checkbox label{display:flex;gap:6px}
+canvas{
+  width:100%;
+  height:180px;
+  border:1px solid var(--border);
+  border-radius:5px;
+}
+button{
+  padding:14px;
+  border:none;
+  background:var(--primary);
+  color:#fff;
+  width:100%;
+  font-size:16px;
+  font-weight:600;
+  border-radius:5px;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-fire-extinguisher"></i> Sprinkler Modification Work Permit</h1>
-            <div class="subtitle">Fire Safety Compliance Form</div>
+
+<div class="container">
+  <div class="header">
+    <h1>Sprinkler Modification Work Permit</h1>
+  </div>
+
+  <div class="content">
+
+    <div class="section">
+      <div class="section-title">Work Permit Details</div>
+      <div class="grid">
+        <div>
+          <label>Serial No</label>
+          <input id="serial" value="AUTO" readonly>
         </div>
-
-        <div class="form-container">
-            <div id="errorMessage" class="error-message"></div>
-            
-            <div id="formContent">
-                <!-- Form Details -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-file-alt"></i> Work Permit Details
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="serialNo">Serial No</label>
-                            <input type="text" id="serialNo" placeholder="001, 002, ..." readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" id="date">
-                        </div>
-                        <div class="form-group">
-                            <label for="tower">Tower *</label>
-                            <select id="tower" required>
-                                <option value="">Select Tower</option>
-                                <option value="A">Tower A</option>
-                                <option value="B">Tower B</option>
-                                <option value="C">Tower C</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="flatNo">Flat No *</label>
-                            <input type="text" id="flatNo" placeholder="e.g., 105" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="ownerName">Owner Name *</label>
-                            <input type="text" id="ownerName" placeholder="Full name of owner" required>
-                        </div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="contactNumber">Contact Number *</label>
-                            <input type="tel" id="contactNumber" placeholder="e.g., 9876543210" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address (Optional)</label>
-                            <input type="email" id="email" placeholder="owner@example.com">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sprinkler Extension Locations -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-map-marker-alt"></i> Sprinkler Extension Required At
-                    </div>
-                    <div class="checkbox-grid">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="hall" value="Hall" name="location">
-                            <label for="hall">Hall</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="dining" value="Dining" name="location">
-                            <label for="dining">Dining</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="kitchen" value="Kitchen" name="location">
-                            <label for="kitchen">Kitchen</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="mbr" value="MBR" name="location">
-                            <label for="mbr">MBR</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="cbr" value="CBR" name="location">
-                            <label for="cbr">CBR</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="gbr" value="GBR" name="location">
-                            <label for="gbr">GBR</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Note & Advisory -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-exclamation-triangle"></i> Note & Advisory
-                    </div>
-                    <div class="note-section">
-                        <h3>Important Information:</h3>
-                        <ul>
-                            <li>The Fire Sprinklers along with related fire system pipelines, Smoke Detectors with related wiring provided inside the flat for Fire Safety are neither to be tampered with nor modified nor concealed above the false ceiling while carrying out the interior works.</li>
-                            <li>Owners are to insist with their interior vendors for integration of the original setup of fire sprinkler and smoke detection systems as provided by the builder into the interior design in line with guidelines mentioned herein.</li>
-                            <li>The owner is to obtain prior clearance from PMS if he still has to make such modifications for which neither TeamMyth nor PMS bears any responsibility for any damages whatsoever caused thereafter either to self property, neighbours or common area property.</li>
-                            <li>You are hereby advised not to carry out any modification works with respect to the fire sprinklers and smoke detectors provided by the builder. Since this is a high-rise building, fire safety shall be given utmost priority over aesthetics. If modifications are still chosen, the owner shall engage only the original vendor who executed the firefighting works.</li>
-                        </ul>
-                        <div class="advisory-checkbox">
-                            <input type="checkbox" id="advisoryCheck" required>
-                            <label for="advisoryCheck" style="font-weight: 600; color: #0d6a4e;">
-                                I have read and understood the above Note & Advisory *
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Signature Section -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-signature"></i> Signature of Owner *
-                    </div>
-                    <div class="signature-section">
-                        <div class="signature-title">ADD SIGNATURE</div>
-                        
-                        <div class="signature-preview" id="signaturePreview">
-                            <i class="fas fa-signature fa-2x" style="color: #cbd5e1;"></i>
-                            <span style="margin-left: 10px; color: #64748b;">No signature added</span>
-                        </div>
-                        
-                        <div class="signature-buttons">
-                            <button type="button" class="btn btn-signature" onclick="openSignatureModal()">
-                                <i class="fas fa-pen"></i> Add Signature
-                            </button>
-                            <button type="button" class="btn btn-clear" onclick="clearSignature()">
-                                <i class="fas fa-trash"></i> Clear Signature
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div style="text-align: center; margin-top: 30px;">
-                    <button type="button" class="btn btn-submit" onclick="submitForm()" id="submitBtn">
-                        <i class="fas fa-paper-plane"></i> Submit Form
-                    </button>
-                </div>
-
-                <!-- Loading Indicator -->
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Submitting form and generating PDF...</p>
-                    <p style="font-size: 12px; color: #64748b; margin-top: 10px;">Please don't close this window</p>
-                </div>
-
-                <!-- Success Message -->
-                <div class="success-message" id="successMessage">
-                    <i class="fas fa-check-circle"></i>
-                    <h2>Form Submitted Successfully!</h2>
-                    <p>Your sprinkler modification request has been submitted.</p>
-                    <p><strong>Reference Number: <span id="referenceNumber"></span></strong></p>
-                    <p style="margin-top: 15px; font-size: 14px; color: #64748b;">
-                        <i class="fas fa-info-circle"></i> A confirmation email with PDF has been sent to the administrator.
-                    </p>
-                    <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
-                        <p style="margin-bottom: 10px; font-weight: 600;">Next Steps:</p>
-                        <ol style="text-align: left; margin-left: 20px;">
-                            <li>Your request is now in the system</li>
-                            <li>The fire safety team will review it</li>
-                            <li>You'll be contacted if additional information is needed</li>
-                            <li>Keep your reference number for future inquiries</li>
-                        </ol>
-                    </div>
-                    <button type="button" class="btn" onclick="printForm()" style="margin-top: 20px; background: #64748b; color: white;">
-                        <i class="fas fa-print"></i> Print Confirmation
-                    </button>
-                </div>
-            </div>
-
-            <div class="form-footer">
-                <p><i class="fas fa-shield-alt"></i> This form ensures compliance with fire safety regulations</p>
-                <p style="font-size: 12px; margin-top: 5px;">Fields marked with * are required</p>
-            </div>
+        <div>
+          <label>Date</label>
+          <input id="date" readonly>
         </div>
+        <div>
+          <label>Tower</label>
+          <select id="tower">
+            <option>A</option><option>B</option><option>C</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:16px">
+        <div>
+          <label>Flat No</label>
+          <input id="flat">
+        </div>
+        <div>
+          <label>Owner Name</label>
+          <input id="owner">
+        </div>
+        <div>
+          <label>Contact</label>
+          <input id="contact">
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <label>Email</label>
+        <input id="email">
+      </div>
     </div>
 
-    <!-- Signature Modal -->
-    <div class="modal" id="signatureModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-signature"></i> Add Your Signature</h2>
-                <button class="modal-close" onclick="closeSignatureModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="signature-instruction">
-                    <p>Draw your signature in the box below using your mouse or touch</p>
-                    <p><small>Tip: Draw slowly for better accuracy</small></p>
-                </div>
-                
-                <canvas id="signaturePad" class="signature-modal-pad"></canvas>
-                
-                <div class="modal-controls">
-                    <button type="button" class="btn btn-modal btn-clear" onclick="clearModalSignature()">
-                        <i class="fas fa-eraser"></i> Clear
-                    </button>
-                    <button type="button" class="btn btn-modal btn-cancel" onclick="closeSignatureModal()">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                    <button type="button" class="btn btn-modal btn-save" onclick="saveSignature()">
-                        <i class="fas fa-check"></i> Save Signature
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="section">
+      <div class="section-title">Sprinkler Extension Required At</div>
+      <div class="checkbox">
+        <label><input type="checkbox" value="Hall">Hall</label>
+        <label><input type="checkbox" value="Kitchen">Kitchen</label>
+        <label><input type="checkbox" value="Dining">Dining</label>
+        <label><input type="checkbox" value="MBR">MBR</label>
+        <label><input type="checkbox" value="CBR">CBR</label>
+        <label><input type="checkbox" value="GBR">GBR</label>
+      </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        // ==============================================
-        // CONFIGURATION
-        // ==============================================
-        // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf3e72jSGOpuTnPQNPmhbDpGgMVCJNx_K-SMOkzjnkRMd0YSph5cYisCNXyIG8JG3Y/exec'; // ← REPLACE THIS
-        
-        // Global variables
-        let signaturePadCanvas;
-        let signatureCtx;
-        let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
-        let signatureImageData = null;
-        let currentSerial = 1;
+    <div class="section">
+      <div class="section-title">Owner Signature</div>
+      <canvas id="sign" width="900" height="180"></canvas>
+    </div>
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            document.getElementById('date').min = today;
-            
-            // Initialize serial number
-            initSerialNumber();
-            
-            // Add input validation for contact number
-            const contactInput = document.getElementById('contactNumber');
-            contactInput.addEventListener('input', function(e) {
-                // Allow only numbers
-                this.value = this.value.replace(/\D/g, '');
-                // Limit to 10 digits
-                if (this.value.length > 10) {
-                    this.value = this.value.slice(0, 10);
-                }
-            });
-            
-            console.log('Form initialized successfully');
-        });
+    <button onclick="submitForm()">Submit Work Permit</button>
 
-        // Initialize serial number
-        function initSerialNumber() {
-            const storedSerial = localStorage.getItem('sprinkler_last_serial');
-            if (storedSerial) {
-                currentSerial = parseInt(storedSerial);
-            } else {
-                currentSerial = 1;
-            }
-            document.getElementById('serialNo').value = currentSerial.toString().padStart(3, '0');
-        }
+  </div>
+</div>
 
-        // Show error message
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-            errorDiv.style.display = 'block';
-        }
+<script>
+document.getElementById("date").value =
+  new Date().toLocaleDateString("en-GB");
 
-        // Clear error message
-        function clearError() {
-            document.getElementById('errorMessage').style.display = 'none';
-        }
+const canvas=document.getElementById("sign");
+const ctx=canvas.getContext("2d");
+let drawing=false;
 
-        // ==============================================
-        // SIGNATURE MODAL FUNCTIONS
-        // ==============================================
+canvas.onmousedown=e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY)};
+canvas.onmousemove=e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke()}};
+canvas.onmouseup=()=>drawing=false;
 
-        function openSignatureModal() {
-            const modal = document.getElementById('signatureModal');
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            
-            // Initialize signature pad after modal is visible
-            setTimeout(() => {
-                initSignaturePad();
-            }, 10);
-        }
+function submitForm(){
+  const ext=[];
+  document.querySelectorAll(".checkbox input:checked")
+    .forEach(c=>ext.push(c.value));
 
-        function closeSignatureModal() {
-            const modal = document.getElementById('signatureModal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+  fetch("https://script.google.com/macros/s/AKfycbxzPMmY0Kx-jQiNSjp0BCtyojTIaOFfzXkZbDRhSJcfiJZO90Ktat4ftYrkes51viKmNw/exec",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      tower:tower.value,
+      flat:flat.value,
+      owner:owner.value,
+      contact:contact.value,
+      email:email.value,
+      extensions:ext,
+      signature:canvas.toDataURL()
+    })
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.status==="SUCCESS"){
+      serial.value=res.serial;
+      date.value=res.date;
+      alert("Submitted successfully\nSerial No: "+res.serial);
+    }else{
+      alert(res.message);
+    }
+  })
+  .catch(()=>alert("Submission failed"));
+}
+</script>
 
-        function initSignaturePad() {
-            signaturePadCanvas = document.getElementById('signaturePad');
-            signatureCtx = signaturePadCanvas.getContext('2d');
-            
-            // Set canvas dimensions
-            const rect = signaturePadCanvas.getBoundingClientRect();
-            signaturePadCanvas.width = rect.width * 2;
-            signaturePadCanvas.height = rect.height * 2;
-            
-            // Scale context for retina
-            signatureCtx.scale(2, 2);
-            
-            // Set drawing styles
-            signatureCtx.lineWidth = 2;
-            signatureCtx.lineCap = 'round';
-            signatureCtx.lineJoin = 'round';
-            signatureCtx.strokeStyle = '#000000';
-            signatureCtx.fillStyle = 'white';
-            signatureCtx.fillRect(0, 0, rect.width, rect.height);
-            
-            // Add event listeners for mouse
-            signaturePadCanvas.addEventListener('mousedown', startDrawing);
-            signaturePadCanvas.addEventListener('mousemove', draw);
-            signaturePadCanvas.addEventListener('mouseup', stopDrawing);
-            signaturePadCanvas.addEventListener('mouseout', stopDrawing);
-            
-            // Add event listeners for touch
-            signaturePadCanvas.addEventListener('touchstart', handleTouchStart);
-            signaturePadCanvas.addEventListener('touchmove', handleTouchMove);
-            signaturePadCanvas.addEventListener('touchend', stopDrawing);
-            
-            // Prevent scrolling on touch devices
-            signaturePadCanvas.addEventListener('touchstart', (e) => {
-                if (e.target === signaturePadCanvas) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-        }
-
-        function handleTouchStart(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const rect = signaturePadCanvas.getBoundingClientRect();
-            startDrawing({
-                clientX: touch.clientX - rect.left,
-                clientY: touch.clientY - rect.top
-            });
-        }
-
-        function handleTouchMove(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const rect = signaturePadCanvas.getBoundingClientRect();
-            draw({
-                clientX: touch.clientX - rect.left,
-                clientY: touch.clientY - rect.top
-            });
-        }
-
-        function startDrawing(e) {
-            isDrawing = true;
-            [lastX, lastY] = [e.clientX, e.clientY];
-            signatureCtx.beginPath();
-            signatureCtx.moveTo(lastX, lastY);
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            
-            signatureCtx.lineTo(e.clientX, e.clientY);
-            signatureCtx.stroke();
-            [lastX, lastY] = [e.clientX, e.clientY];
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-            signatureCtx.closePath();
-        }
-
-        function clearModalSignature() {
-            const rect = signaturePadCanvas.getBoundingClientRect();
-            signatureCtx.clearRect(0, 0, rect.width, rect.height);
-            signatureCtx.fillRect(0, 0, rect.width, rect.height);
-            signatureImageData = null;
-        }
-
-        function saveSignature() {
-            // Check if signature exists
-            const rect = signaturePadCanvas.getBoundingClientRect();
-            const imageData = signatureCtx.getImageData(0, 0, rect.width * 2, rect.height * 2);
-            
-            let isEmpty = true;
-            const data = imageData.data;
-            for (let i = 3; i < data.length; i += 4) {
-                if (data[i] > 0) {
-                    isEmpty = false;
-                    break;
-                }
-            }
-            
-            if (isEmpty) {
-                alert('Please draw your signature before saving');
-                return;
-            }
-            
-            // Convert canvas to data URL
-            signatureImageData = signaturePadCanvas.toDataURL('image/png');
-            
-            // Update preview
-            const preview = document.getElementById('signaturePreview');
-            preview.innerHTML = `
-                <img src="${signatureImageData}" alt="Signature" style="max-width: 100%; max-height: 100%;">
-                <div style="position: absolute; bottom: 5px; right: 5px; background: #0d6a4e; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px;">
-                    <i class="fas fa-check"></i> Signed
-                </div>
-            `;
-            preview.classList.add('has-signature');
-            
-            // Close modal
-            closeSignatureModal();
-        }
-
-        function clearSignature() {
-            signatureImageData = null;
-            const preview = document.getElementById('signaturePreview');
-            preview.innerHTML = `
-                <i class="fas fa-signature fa-2x" style="color: #cbd5e1;"></i>
-                <span style="margin-left: 10px; color: #64748b;">No signature added</span>
-            `;
-            preview.classList.remove('has-signature');
-        }
-
-        // ==============================================
-        // FORM VALIDATION
-        // ==============================================
-
-        function validateForm() {
-            const tower = document.getElementById('tower').value;
-            const flatNo = document.getElementById('flatNo').value.trim();
-            const ownerName = document.getElementById('ownerName').value.trim();
-            const contactNumber = document.getElementById('contactNumber').value.trim();
-            const advisoryCheck = document.getElementById('advisoryCheck').checked;
-            
-            // Clear previous errors
-            clearError();
-            
-            // Validate required fields
-            if (!tower) {
-                showError('Please select a Tower (A, B, or C)');
-                document.getElementById('tower').focus();
-                return false;
-            }
-            
-            if (!flatNo) {
-                showError('Please enter Flat Number');
-                document.getElementById('flatNo').focus();
-                return false;
-            }
-            
-            if (!ownerName) {
-                showError('Please enter Owner Name');
-                document.getElementById('ownerName').focus();
-                return false;
-            }
-            
-            if (!contactNumber) {
-                showError('Please enter Contact Number');
-                document.getElementById('contactNumber').focus();
-                return false;
-            }
-            
-            const digitsOnly = contactNumber.replace(/\D/g, '');
-            if (digitsOnly.length < 10) {
-                showError('Please enter a valid 10-digit phone number');
-                document.getElementById('contactNumber').focus();
-                return false;
-            }
-            
-            if (!signatureImageData) {
-                showError('Please add your signature');
-                return false;
-            }
-            
-            if (!advisoryCheck) {
-                showError('You must acknowledge the Note & Advisory');
-                document.getElementById('advisoryCheck').focus();
-                return false;
-            }
-            
-            return true;
-        }
-
-        // Get selected locations
-        function getSelectedLocations() {
-            try {
-                const locationIds = ['hall', 'dining', 'kitchen', 'mbr', 'cbr', 'gbr'];
-                const locations = [];
-                
-                locationIds.forEach(id => {
-                    const checkbox = document.getElementById(id);
-                    if (checkbox && checkbox.checked) {
-                        locations.push(checkbox.value);
-                    }
-                });
-                
-                return locations.length > 0 ? locations.join(', ') : 'None selected';
-            } catch (error) {
-                console.error('Error getting locations:', error);
-                return 'None selected';
-            }
-        }
-
-        // Helper function to convert blob to base64
-        function blobToBase64(blob) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
-        }
-
-        // ==============================================
-        // PDF GENERATION
-        // ==============================================
-
-        // Generate PDF
-        function generatePDF(formData) {
-            return new Promise((resolve) => {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                // Add header
-                doc.setFontSize(16);
-                doc.setTextColor(13, 106, 78);
-                doc.text('SPRINKLER MODIFICATION WORK PERMIT', 105, 20, null, null, 'center');
-                
-                doc.setFontSize(12);
-                doc.setTextColor(100, 100, 100);
-                doc.text('Fire Safety Compliance Form', 105, 28, null, null, 'center');
-                
-                doc.setFontSize(10);
-                doc.setTextColor(0, 0, 0);
-                
-                let yPos = 40;
-                
-                // Form Details
-                doc.setFillColor(13, 106, 78);
-                doc.setTextColor(255, 255, 255);
-                doc.rect(20, yPos, 170, 10, 'F');
-                doc.text('FORM DETAILS', 105, yPos + 7, null, null, 'center');
-                
-                yPos += 15;
-                doc.setTextColor(0, 0, 0);
-                
-                doc.text(`Serial No: ${formData.serialNo}`, 20, yPos);
-                doc.text(`Date: ${formData.date}`, 80, yPos);
-                doc.text(`Tower: ${formData.tower}`, 140, yPos);
-                
-                yPos += 10;
-                doc.text(`Flat No: ${formData.flatNo}`, 20, yPos);
-                doc.text(`Owner Name: ${formData.ownerName}`, 80, yPos);
-                
-                yPos += 10;
-                doc.text(`Contact Number: ${formData.contactNumber}`, 20, yPos);
-                
-                yPos += 15;
-                
-                // Sprinkler Locations
-                doc.setFillColor(13, 106, 78);
-                doc.setTextColor(255, 255, 255);
-                doc.rect(20, yPos, 170, 10, 'F');
-                doc.text('SPRINKLER EXTENSION REQUIRED AT', 105, yPos + 7, null, null, 'center');
-                
-                yPos += 15;
-                doc.setTextColor(0, 0, 0);
-                doc.text(formData.locations, 20, yPos);
-                
-                yPos += 15;
-                
-                // Note & Advisory
-                doc.setFillColor(13, 106, 78);
-                doc.setTextColor(255, 255, 255);
-                doc.rect(20, yPos, 170, 10, 'F');
-                doc.text('NOTE & ADVISORY ACKNOWLEDGEMENT', 105, yPos + 7, null, null, 'center');
-                
-                yPos += 15;
-                doc.setTextColor(0, 0, 0);
-                doc.text("I confirm that I have read and understood the Note & Advisory", 20, yPos);
-                doc.text("and agree to comply with all fire safety regulations.", 20, yPos + 6);
-                
-                yPos += 15;
-                doc.text("Advisory Accepted: YES", 20, yPos);
-                
-                yPos += 15;
-                doc.text("Signature of Owner:", 20, yPos);
-                
-                // Add signature if available
-                if (formData.signature) {
-                    try {
-                        doc.addImage(formData.signature, 'PNG', 20, yPos + 5, 60, 20);
-                    } catch (e) {
-                        console.log('Signature not added to PDF:', e);
-                    }
-                }
-                
-                yPos += 30;
-                doc.line(20, yPos, 80, yPos);
-                doc.text(formData.ownerName, 20, yPos + 5);
-                doc.text(`Flat ${formData.flatNo}, Tower ${formData.tower}`, 20, yPos + 10);
-                
-                // Timestamp
-                yPos += 20;
-                doc.setFontSize(8);
-                doc.setTextColor(150, 150, 150);
-                const now = new Date();
-                doc.text(`Generated: ${now.toLocaleDateString('en-IN')} ${now.toLocaleTimeString('en-IN')}`, 105, yPos, null, null, 'center');
-                doc.text(`Reference: ${formData.serialNo}`, 105, yPos + 5, null, null, 'center');
-                
-                const pdfBlob = doc.output('blob');
-                resolve(pdfBlob);
-            });
-        }
-
-        // ==============================================
-        // FORM SUBMISSION - SIMPLE WORKING VERSION
-        // ==============================================
-
-        async function submitForm() {
-            console.log('🚀 Submit button clicked');
-            
-            if (!validateForm()) {
-                console.log('❌ Form validation failed');
-                return;
-            }
-            
-            // Show loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('submitBtn').disabled = true;
-            clearError();
-            
-            try {
-                // Get form data
-                const formData = {
-                    serialNo: currentSerial.toString().padStart(3, '0'),
-                    date: document.getElementById('date').value,
-                    tower: document.getElementById('tower').value,
-                    flatNo: document.getElementById('flatNo').value.trim(),
-                    ownerName: document.getElementById('ownerName').value.trim(),
-                    contactNumber: document.getElementById('contactNumber').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    locations: getSelectedLocations(),
-                    signature: signatureImageData,
-                    advisoryAccepted: true
-                };
-                
-                console.log('📋 Form data collected:', formData);
-                
-                // Generate PDF
-                console.log('📄 Generating PDF...');
-                const pdfBlob = await generatePDF(formData);
-                console.log('✅ PDF generated');
-                
-                // Convert PDF to base64
-                const pdfBase64 = await blobToBase64(pdfBlob);
-                const pdfBase64Data = pdfBase64.split(',')[1];
-                
-                // Prepare request data
-                const requestData = {
-                    formData: formData,
-                    pdf: pdfBase64Data
-                };
-                
-                console.log('📤 Submitting to:', SCRIPT_URL);
-                
-                // Submit using simple fetch
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
-                
-                console.log('📥 Response status:', response.status);
-                
-                const result = await response.json();
-                console.log('✅ Server response:', result);
-                
-                if (result.success) {
-                    // Update serial number
-                    localStorage.setItem('sprinkler_last_serial', currentSerial + 1);
-                    
-                    // Show success
-                    document.getElementById('formContent').style.display = 'none';
-                    document.getElementById('referenceNumber').textContent = formData.serialNo;
-                    document.getElementById('successMessage').style.display = 'block';
-                    
-                    console.log('🎉 Form submitted successfully! Reference:', formData.serialNo);
-                    
-                } else {
-                    throw new Error(result.message || 'Submission failed');
-                }
-                
-            } catch (error) {
-                console.error('❌ Submission error:', error);
-                showError(`Submission failed: ${error.message}. Please try again.`);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('submitBtn').disabled = false;
-            }
-        }
-
-        // Print confirmation
-        function printForm() {
-            const printContent = document.getElementById('successMessage').innerHTML;
-            const originalContent = document.body.innerHTML;
-            
-            document.body.innerHTML = `
-                <div style="padding: 20px; font-family: Arial, sans-serif;">
-                    <h1 style="color: #0d6a4e; text-align: center;">Sprinkler Modification Request Confirmation</h1>
-                    <div style="background: #f0f9f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                        ${printContent}
-                    </div>
-                    <p style="text-align: center; color: #64748b; font-size: 12px;">
-                        Printed on: ${new Date().toLocaleString()}
-                    </p>
-                </div>
-            `;
-            
-            window.print();
-            document.body.innerHTML = originalContent;
-            location.reload();
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('signatureModal');
-            if (event.target === modal) {
-                closeSignatureModal();
-            }
-        };
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeSignatureModal();
-            }
-        });
-    </script>
 </body>
 </html>
