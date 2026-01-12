@@ -307,6 +307,16 @@
             margin-bottom: 15px;
         }
 
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+            border-left: 4px solid #dc2626;
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -427,16 +437,6 @@
             background: #b91c1c;
         }
 
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: none;
-            border-left: 4px solid #dc2626;
-        }
-
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -470,7 +470,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1></i> Fire Sprinkler extension Request</h1>
+            <h1><i/i> Fire Sprinkler Extension Request</h1>
         </div>
 
         <div class="form-container">
@@ -530,27 +530,27 @@
                     </div>
                     <div class="checkbox-grid">
                         <div class="checkbox-group">
-                            <input type="checkbox" id="Hall" value="Half">
-                            <label for="half">Hall</label>
+                            <input type="checkbox" id="hall" value="Half" name="location">
+                            <label for="half">hall</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="dining" value="Dining">
+                            <input type="checkbox" id="dining" value="Dining" name="location">
                             <label for="dining">Dining</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="kitchen" value="Kitchen">
+                            <input type="checkbox" id="kitchen" value="Kitchen" name="location">
                             <label for="kitchen">Kitchen</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="mbr" value="MBR">
+                            <input type="checkbox" id="mbr" value="MBR" name="location">
                             <label for="mbr">MBR</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="cbr" value="CBR">
+                            <input type="checkbox" id="cbr" value="CBR" name="location">
                             <label for="cbr">CBR</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="gbr" value="GBR">
+                            <input type="checkbox" id="gbr" value="GBR" name="location">
                             <label for="gbr">GBR</label>
                         </div>
                     </div>
@@ -683,7 +683,7 @@
         // CONFIGURATION
         // ==============================================
         // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT URL
-        const SCRIPT_URL = 'https://script.googleusercontent.com/a/macros/team4lifespaces.com/echo?user_content_key=AehSKLhJVPLRmhd2eT7CD19PUys4HxQwENLP9Bu6WtwW1gEMFhGFCZUk11dSSTHY-gL_5hEFITwvzqI7HDq81ikOrWLSIiHxMgF_HfyV9nxF5VYdno6yW5O4NpidNU2B2w_1UrOBOYKz2Uum4xrPaf0Mr44bOPtNsCAck8cAoenmt0KrZ3F31JSBy09gVrjsd_xnGM5JB2OQ0XX6vp_oUuy-wFmSNnLMFYfMb3Wxwx10Eh7XR-RuVgA1bouNtm7MHkZ44fFvXeJq-dupC7MUDbSAVCYzBorPdgfLWrlqQAd5phWMR8nUEtYm9QyJJ2CykA&lib=Mgde6AxzIi03wo90aPAvz3-p26hxlXT7N';
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
         // ==============================================
 
         // Global variables
@@ -711,11 +711,10 @@
                 this.value = this.value.replace(/[^\d\s+\-()]/g, '');
             });
             
-            // Add form validation on input
-            setupFormValidation();
-            
             // Test backend connection
             testBackendConnection();
+            
+            console.log('Form initialized successfully');
         });
 
         // Initialize serial number
@@ -727,61 +726,6 @@
                 currentSerial = 1;
             }
             document.getElementById('serialNo').value = currentSerial.toString().padStart(3, '0');
-        }
-
-        // Setup form validation
-        function setupFormValidation() {
-            const requiredFields = ['flatNo', 'ownerName', 'contactNumber'];
-            
-            requiredFields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                field.addEventListener('blur', function() {
-                    validateField(this);
-                });
-            });
-        }
-
-        // Validate individual field
-        function validateField(field) {
-            const value = field.value.trim();
-            const fieldId = field.id;
-            
-            if (!value) {
-                showError(`${getFieldLabel(fieldId)} is required`);
-                return false;
-            }
-            
-            // Specific validations
-            if (fieldId === 'contactNumber' && value.replace(/\D/g, '').length < 10) {
-                showError('Please enter a valid 10-digit phone number');
-                return false;
-            }
-            
-            if (fieldId === 'email' && value && !validateEmail(value)) {
-                showError('Please enter a valid email address');
-                return false;
-            }
-            
-            clearError();
-            return true;
-        }
-
-        // Get field label
-        function getFieldLabel(fieldId) {
-            const labels = {
-                'flatNo': 'Flat Number',
-                'ownerName': 'Owner Name',
-                'contactNumber': 'Contact Number',
-                'tower': 'Tower',
-                'email': 'Email'
-            };
-            return labels[fieldId] || fieldId;
-        }
-
-        // Validate email
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
         }
 
         // Show error message
@@ -804,7 +748,7 @@
                     console.log('Backend connection successful');
                 }
             } catch (error) {
-                console.log('Backend connection test failed (this is normal during initial setup)');
+                console.log('Backend connection test failed - please check your Google Apps Script URL');
             }
         }
 
@@ -959,7 +903,6 @@
             const flatNo = document.getElementById('flatNo').value.trim();
             const ownerName = document.getElementById('ownerName').value.trim();
             const contactNumber = document.getElementById('contactNumber').value.trim();
-            const email = document.getElementById('email').value.trim();
             const advisoryCheck = document.getElementById('advisoryCheck').checked;
             
             // Clear previous errors
@@ -997,12 +940,6 @@
                 return false;
             }
             
-            if (email && !validateEmail(email)) {
-                showError('Please enter a valid email address');
-                document.getElementById('email').focus();
-                return false;
-            }
-            
             if (!signatureImageData) {
                 showError('Please add your signature');
                 return false;
@@ -1017,16 +954,30 @@
             return true;
         }
 
-        // Get selected locations
+        // Get selected locations - FIXED VERSION
         function getSelectedLocations() {
-            const locations = [];
-            const checkboxes = ['half', 'dining', 'kitchen', 'mbr', 'cbr', 'gbr'];
-            checkboxes.forEach(id => {
-                if (document.getElementById(id).checked) {
-                    locations.push(document.getElementById(id).value);
-                }
-            });
-            return locations.length > 0 ? locations.join(', ') : 'None selected';
+            try {
+                const locationIds = ['half', 'dining', 'kitchen', 'mbr', 'cbr', 'gbr'];
+                const locations = [];
+                
+                locationIds.forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox && checkbox.checked) {
+                        locations.push(checkbox.value);
+                    }
+                });
+                
+                return locations.length > 0 ? locations.join(', ') : 'None selected';
+            } catch (error) {
+                console.error('Error getting locations:', error);
+                return 'Error reading locations';
+            }
+        }
+
+        // Validate email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         }
 
         // Generate PDF
@@ -1127,9 +1078,14 @@
             });
         }
 
-        // Submit form
+        // Submit form - FIXED VERSION
         async function submitForm() {
-            if (!validateForm()) return;
+            console.log('Submit button clicked');
+            
+            if (!validateForm()) {
+                console.log('Form validation failed');
+                return;
+            }
             
             // Show loading
             document.getElementById('loading').style.display = 'block';
@@ -1152,13 +1108,26 @@
                     submittedAt: new Date().toISOString()
                 };
                 
+                console.log('Form data collected:', {
+                    serialNo: formData.serialNo,
+                    tower: formData.tower,
+                    flatNo: formData.flatNo,
+                    ownerName: formData.ownerName,
+                    locations: formData.locations,
+                    hasSignature: !!formData.signature
+                });
+                
                 // Generate PDF
+                console.log('Generating PDF...');
                 const pdfBlob = await generatePDF(formData);
+                console.log('PDF generated successfully');
                 
                 // Prepare form data for submission
                 const formDataToSend = new FormData();
                 formDataToSend.append('formData', JSON.stringify(formData));
                 formDataToSend.append('pdf', pdfBlob, `Sprinkler_Request_${formData.tower}_${formData.flatNo}_${formData.serialNo}.pdf`);
+                
+                console.log('Submitting to:', SCRIPT_URL);
                 
                 // Submit to Google Apps Script
                 const response = await fetch(SCRIPT_URL, {
@@ -1166,11 +1135,14 @@
                     body: formDataToSend
                 });
                 
+                console.log('Response status:', response.status);
+                
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const result = await response.json();
+                console.log('Response data:', result);
                 
                 if (result.success) {
                     // Update serial number in localStorage
@@ -1180,6 +1152,8 @@
                     document.getElementById('formContent').style.display = 'none';
                     document.getElementById('referenceNumber').textContent = formData.serialNo;
                     document.getElementById('successMessage').style.display = 'block';
+                    
+                    console.log('Form submitted successfully! Reference:', formData.serialNo);
                     
                 } else {
                     throw new Error(result.message || 'Submission failed');
