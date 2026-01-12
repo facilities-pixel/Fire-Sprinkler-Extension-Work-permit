@@ -27,7 +27,7 @@
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             overflow: hidden;
             position: relative;
         }
@@ -56,9 +56,9 @@
         }
 
         .section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .section-title {
@@ -470,7 +470,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i/i> Fire Sprinkler Extension Request</h1>
+            <h1><i class="fas fa-fire-extinguisher"></i> Sprinkler Modification Work Permit</h1>
+            <div class="subtitle">Fire Safety Compliance Form</div>
         </div>
 
         <div class="form-container">
@@ -485,14 +486,14 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="serialNo">Serial No</label>
-                            <input type="text" id="serialNo" placeholder="Auto-generated" readonly>
+                            <input type="text" id="serialNo" placeholder="001, 002, ..." readonly>
                         </div>
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" id="date">
                         </div>
                         <div class="form-group">
-                            <label for="tower">Tower</label>
+                            <label for="tower">Tower *</label>
                             <select id="tower" required>
                                 <option value="">Select Tower</option>
                                 <option value="A">Tower A</option>
@@ -514,7 +515,7 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="contactNumber">Contact Number *</label>
-                            <input type="tel" id="contactNumber" placeholder="e.g., +91 98765 43210" required>
+                            <input type="tel" id="contactNumber" placeholder="e.g., 9876543210" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address (Optional)</label>
@@ -530,8 +531,8 @@
                     </div>
                     <div class="checkbox-grid">
                         <div class="checkbox-group">
-                            <input type="checkbox" id="hall" value="Half" name="location">
-                            <label for="half">hall</label>
+                            <input type="checkbox" id="hall" value="Hall" name="location">
+                            <label for="hall">Hall</label>
                         </div>
                         <div class="checkbox-group">
                             <input type="checkbox" id="dining" value="Dining" name="location">
@@ -634,7 +635,7 @@
                             <li>Keep your reference number for future inquiries</li>
                         </ol>
                     </div>
-                    <button type="button" class="btn btn-submit" onclick="printForm()" style="margin-top: 20px;">
+                    <button type="button" class="btn" onclick="printForm()" style="margin-top: 20px; background: #64748b; color: white;">
                         <i class="fas fa-print"></i> Print Confirmation
                     </button>
                 </div>
@@ -683,9 +684,8 @@
         // CONFIGURATION
         // ==============================================
         // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6W0S27dMNgT8LGMTVZkFKWMt09LhCbZme--pm7S76PeYRPWCnSVSeXeQ1OXIF2Qfy/exec';
-        // ==============================================
-
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf3e72jSGOpuTnPQNPmhbDpGgMVCJNx_K-SMOkzjnkRMd0YSph5cYisCNXyIG8JG3Y/exec'; // ← REPLACE THIS
+        
         // Global variables
         let signaturePadCanvas;
         let signatureCtx;
@@ -705,14 +705,16 @@
             // Initialize serial number
             initSerialNumber();
             
-            // Add input validation
+            // Add input validation for contact number
             const contactInput = document.getElementById('contactNumber');
             contactInput.addEventListener('input', function(e) {
-                this.value = this.value.replace(/[^\d\s+\-()]/g, '');
+                // Allow only numbers
+                this.value = this.value.replace(/\D/g, '');
+                // Limit to 10 digits
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
             });
-            
-            // Test backend connection
-            testBackendConnection();
             
             console.log('Form initialized successfully');
         });
@@ -740,18 +742,6 @@
             document.getElementById('errorMessage').style.display = 'none';
         }
 
-        // Test backend connection
-        async function testBackendConnection() {
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=test`);
-                if (response.ok) {
-                    console.log('Backend connection successful');
-                }
-            } catch (error) {
-                console.log('Backend connection test failed - please check your Google Apps Script URL');
-            }
-        }
-
         // ==============================================
         // SIGNATURE MODAL FUNCTIONS
         // ==============================================
@@ -761,6 +751,7 @@
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
+            // Initialize signature pad after modal is visible
             setTimeout(() => {
                 initSignaturePad();
             }, 10);
@@ -776,12 +767,15 @@
             signaturePadCanvas = document.getElementById('signaturePad');
             signatureCtx = signaturePadCanvas.getContext('2d');
             
+            // Set canvas dimensions
             const rect = signaturePadCanvas.getBoundingClientRect();
             signaturePadCanvas.width = rect.width * 2;
             signaturePadCanvas.height = rect.height * 2;
             
+            // Scale context for retina
             signatureCtx.scale(2, 2);
             
+            // Set drawing styles
             signatureCtx.lineWidth = 2;
             signatureCtx.lineCap = 'round';
             signatureCtx.lineJoin = 'round';
@@ -789,17 +783,18 @@
             signatureCtx.fillStyle = 'white';
             signatureCtx.fillRect(0, 0, rect.width, rect.height);
             
-            // Event listeners
+            // Add event listeners for mouse
             signaturePadCanvas.addEventListener('mousedown', startDrawing);
             signaturePadCanvas.addEventListener('mousemove', draw);
             signaturePadCanvas.addEventListener('mouseup', stopDrawing);
             signaturePadCanvas.addEventListener('mouseout', stopDrawing);
             
-            // Touch events
+            // Add event listeners for touch
             signaturePadCanvas.addEventListener('touchstart', handleTouchStart);
             signaturePadCanvas.addEventListener('touchmove', handleTouchMove);
             signaturePadCanvas.addEventListener('touchend', stopDrawing);
             
+            // Prevent scrolling on touch devices
             signaturePadCanvas.addEventListener('touchstart', (e) => {
                 if (e.target === signaturePadCanvas) {
                     e.preventDefault();
@@ -836,6 +831,7 @@
 
         function draw(e) {
             if (!isDrawing) return;
+            
             signatureCtx.lineTo(e.clientX, e.clientY);
             signatureCtx.stroke();
             [lastX, lastY] = [e.clientX, e.clientY];
@@ -850,9 +846,11 @@
             const rect = signaturePadCanvas.getBoundingClientRect();
             signatureCtx.clearRect(0, 0, rect.width, rect.height);
             signatureCtx.fillRect(0, 0, rect.width, rect.height);
+            signatureImageData = null;
         }
 
         function saveSignature() {
+            // Check if signature exists
             const rect = signaturePadCanvas.getBoundingClientRect();
             const imageData = signatureCtx.getImageData(0, 0, rect.width * 2, rect.height * 2);
             
@@ -870,8 +868,10 @@
                 return;
             }
             
+            // Convert canvas to data URL
             signatureImageData = signaturePadCanvas.toDataURL('image/png');
             
+            // Update preview
             const preview = document.getElementById('signaturePreview');
             preview.innerHTML = `
                 <img src="${signatureImageData}" alt="Signature" style="max-width: 100%; max-height: 100%;">
@@ -881,6 +881,7 @@
             `;
             preview.classList.add('has-signature');
             
+            // Close modal
             closeSignatureModal();
         }
 
@@ -895,7 +896,7 @@
         }
 
         // ==============================================
-        // FORM VALIDATION AND SUBMISSION
+        // FORM VALIDATION
         // ==============================================
 
         function validateForm() {
@@ -910,7 +911,7 @@
             
             // Validate required fields
             if (!tower) {
-                showError('Please select a Tower');
+                showError('Please select a Tower (A, B, or C)');
                 document.getElementById('tower').focus();
                 return false;
             }
@@ -954,10 +955,10 @@
             return true;
         }
 
-        // Get selected locations - FIXED VERSION
+        // Get selected locations
         function getSelectedLocations() {
             try {
-                const locationIds = ['half', 'dining', 'kitchen', 'mbr', 'cbr', 'gbr'];
+                const locationIds = ['hall', 'dining', 'kitchen', 'mbr', 'cbr', 'gbr'];
                 const locations = [];
                 
                 locationIds.forEach(id => {
@@ -970,15 +971,23 @@
                 return locations.length > 0 ? locations.join(', ') : 'None selected';
             } catch (error) {
                 console.error('Error getting locations:', error);
-                return 'Error reading locations';
+                return 'None selected';
             }
         }
 
-        // Validate email
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
+        // Helper function to convert blob to base64
+        function blobToBase64(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
         }
+
+        // ==============================================
+        // PDF GENERATION
+        // ==============================================
 
         // Generate PDF
         function generatePDF(formData) {
@@ -1078,192 +1087,130 @@
             });
         }
 
-        // Submit form - FIXED VERSION
-        // Submit form - ULTIMATE FIXED VERSION
-async function submitForm() {
-  console.log('🚀 Submit button clicked');
-  
-  if (!validateForm()) {
-    console.log('❌ Form validation failed');
-    return;
-  }
-  
-  // Show loading
-  document.getElementById('loading').style.display = 'block';
-  document.getElementById('submitBtn').disabled = true;
-  clearError();
-  
-  try {
-    // Get form data
-    const formData = {
-      serialNo: currentSerial.toString().padStart(3, '0'),
-      date: document.getElementById('date').value,
-      tower: document.getElementById('tower').value,
-      flatNo: document.getElementById('flatNo').value.trim(),
-      ownerName: document.getElementById('ownerName').value.trim(),
-      contactNumber: document.getElementById('contactNumber').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      locations: getSelectedLocations(),
-      signature: signatureImageData,
-      advisoryAccepted: true,
-      submittedAt: new Date().toISOString()
-    };
-    
-    console.log('📋 Form data collected:', {
-      serialNo: formData.serialNo,
-      tower: formData.tower,
-      flatNo: formData.flatNo,
-      ownerName: formData.ownerName
-    });
-    
-    // Generate PDF
-    console.log('📄 Generating PDF...');
-    const pdfBlob = await generatePDF(formData);
-    console.log('✅ PDF generated');
-    
-    // Convert PDF to base64
-    const pdfBase64 = await blobToBase64(pdfBlob);
-    const pdfBase64Data = pdfBase64.split(',')[1]; // Remove prefix
-    
-    // Prepare request data
-    const requestData = {
-      formData: formData,
-      pdf: pdfBase64Data
-    };
-    
-    console.log('📤 Submitting to:', SCRIPT_URL);
-    
-    // FIRST: Test CORS with a simple request
-    try {
-      console.log('🔍 Testing CORS connection...');
-      const testResponse = await fetch(SCRIPT_URL + '?action=test', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      const testResult = await testResponse.json();
-      console.log('✅ CORS test result:', testResult);
-    } catch (corsError) {
-      console.warn('⚠️ CORS test failed (may be normal):', corsError);
-    }
-    
-    // Submit the actual data
-    console.log('📤 Sending form data...');
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(requestData),
-      mode: 'cors' // Explicitly set CORS mode
-    });
-    
-    console.log('📥 Response received, status:', response.status);
-    
-    // Handle response
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Server error:', errorText);
-      throw new Error(`Server error ${response.status}: ${errorText}`);
-    }
-    
-    const result = await response.json();
-    console.log('✅ Server response:', result);
-    
-    if (result.success) {
-      // Update serial number
-      localStorage.setItem('sprinkler_last_serial', currentSerial + 1);
-      
-      // Show success
-      document.getElementById('formContent').style.display = 'none';
-      document.getElementById('referenceNumber').textContent = formData.serialNo;
-      document.getElementById('successMessage').style.display = 'block';
-      
-      console.log('🎉 Form submitted successfully! Reference:', formData.serialNo);
-      
-      // Auto-refresh after 10 seconds
-      setTimeout(() => {
-        console.log('🔄 Refreshing form...');
-        location.reload();
-      }, 10000);
-      
-    } else {
-      throw new Error(result.message || 'Submission failed on server');
-    }
-    
-  } catch (error) {
-    console.error('❌ Submission error:', error);
-    
-    // Try alternative method if first fails
-    if (error.message.includes('CORS') || error.message.includes('Network')) {
-      console.log('🔄 Trying alternative submission method...');
-      await submitFormAlternative();
-      return;
-    }
-    
-    showError(`Submission failed: ${error.message}. Please try again or contact support.`);
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('submitBtn').disabled = false;
-  }
-}
+        // ==============================================
+        // FORM SUBMISSION - SIMPLE WORKING VERSION
+        // ==============================================
 
-// Alternative submission method (FormData instead of JSON)
-async function submitFormAlternative() {
-  try {
-    console.log('🔄 Using alternative submission method...');
-    
-    // Get form data again
-    const formData = {
-      serialNo: currentSerial.toString().padStart(3, '0'),
-      date: document.getElementById('date').value,
-      tower: document.getElementById('tower').value,
-      flatNo: document.getElementById('flatNo').value.trim(),
-      ownerName: document.getElementById('ownerName').value.trim(),
-      contactNumber: document.getElementById('contactNumber').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      locations: getSelectedLocations(),
-      signature: signatureImageData,
-      advisoryAccepted: true
-    };
-    
-    // Generate PDF
-    const pdfBlob = await generatePDF(formData);
-    
-    // Use FormData instead of JSON
-    const formDataToSend = new FormData();
-    formDataToSend.append('formData', JSON.stringify(formData));
-    formDataToSend.append('pdf', pdfBlob, 'sprinkler.pdf');
-    
-    // Submit using FormData
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: formDataToSend,
-      mode: 'no-cors' // Use no-cors for FormData
-    });
-    
-    // With no-cors we can't read response, assume success
-    console.log('✅ Alternative submission sent (no-cors mode)');
-    
-    // Update serial number
-    localStorage.setItem('sprinkler_last_serial', currentSerial + 1);
-    
-    // Show success
-    document.getElementById('formContent').style.display = 'none';
-    document.getElementById('referenceNumber').textContent = formData.serialNo;
-    document.getElementById('successMessage').style.display = 'block';
-    
-    console.log('🎉 Form submitted via alternative method!');
-    
-  } catch (altError) {
-    console.error('❌ Alternative method also failed:', altError);
-    showError('Both submission methods failed. Please save your data and contact support.');
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('submitBtn').disabled = false;
-  }
-});
+        async function submitForm() {
+            console.log('🚀 Submit button clicked');
+            
+            if (!validateForm()) {
+                console.log('❌ Form validation failed');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('submitBtn').disabled = true;
+            clearError();
+            
+            try {
+                // Get form data
+                const formData = {
+                    serialNo: currentSerial.toString().padStart(3, '0'),
+                    date: document.getElementById('date').value,
+                    tower: document.getElementById('tower').value,
+                    flatNo: document.getElementById('flatNo').value.trim(),
+                    ownerName: document.getElementById('ownerName').value.trim(),
+                    contactNumber: document.getElementById('contactNumber').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    locations: getSelectedLocations(),
+                    signature: signatureImageData,
+                    advisoryAccepted: true
+                };
+                
+                console.log('📋 Form data collected:', formData);
+                
+                // Generate PDF
+                console.log('📄 Generating PDF...');
+                const pdfBlob = await generatePDF(formData);
+                console.log('✅ PDF generated');
+                
+                // Convert PDF to base64
+                const pdfBase64 = await blobToBase64(pdfBlob);
+                const pdfBase64Data = pdfBase64.split(',')[1];
+                
+                // Prepare request data
+                const requestData = {
+                    formData: formData,
+                    pdf: pdfBase64Data
+                };
+                
+                console.log('📤 Submitting to:', SCRIPT_URL);
+                
+                // Submit using simple fetch
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                console.log('📥 Response status:', response.status);
+                
+                const result = await response.json();
+                console.log('✅ Server response:', result);
+                
+                if (result.success) {
+                    // Update serial number
+                    localStorage.setItem('sprinkler_last_serial', currentSerial + 1);
+                    
+                    // Show success
+                    document.getElementById('formContent').style.display = 'none';
+                    document.getElementById('referenceNumber').textContent = formData.serialNo;
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    console.log('🎉 Form submitted successfully! Reference:', formData.serialNo);
+                    
+                } else {
+                    throw new Error(result.message || 'Submission failed');
+                }
+                
+            } catch (error) {
+                console.error('❌ Submission error:', error);
+                showError(`Submission failed: ${error.message}. Please try again.`);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        // Print confirmation
+        function printForm() {
+            const printContent = document.getElementById('successMessage').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <div style="padding: 20px; font-family: Arial, sans-serif;">
+                    <h1 style="color: #0d6a4e; text-align: center;">Sprinkler Modification Request Confirmation</h1>
+                    <div style="background: #f0f9f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        ${printContent}
+                    </div>
+                    <p style="text-align: center; color: #64748b; font-size: 12px;">
+                        Printed on: ${new Date().toLocaleString()}
+                    </p>
+                </div>
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('signatureModal');
+            if (event.target === modal) {
+                closeSignatureModal();
+            }
+        };
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeSignatureModal();
+            }
+        });
     </script>
 </body>
 </html>
