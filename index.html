@@ -9,11 +9,11 @@
     <style>
         /* KEEP ALL THE SAME STYLES AS BEFORE */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #f5f5f5; padding: 20px; max-width: 800px; margin: 0 auto; }
+        body { background-color: #0d6a4e; padding: 20px; max-width: 800px; margin: 0 auto; }
         .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
         h1 { color: #d32f2f; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; }
         .status-message { padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; display: none; }
-        .error { background-color: #ffebee; color: #d32f2f; }
+        .error { background-color: #ffebee; color: #0d6a4e; }
         .success { background-color: #e8f5e9; color: #2e7d32; }
         .processing { background-color: #fff3e0; color: #ef6c00; }
         table { width: 100%; border-collapse: collapse; margin: 20px 0; }
@@ -66,8 +66,8 @@
             <h3>🔧 Admin Setup (For Facilities Team Only)</h3>
             <p>Enter your Google Script URL below. This will be saved for all users.</p>
             <input type="text" id="adminScriptUrl" placeholder="https://script.google.com/macros/s/..." style="width: 100%; padding: 10px; margin: 10px 0;">
-            <button onclick="saveAdminUrl()" style="background-color: #ff9800;">Save Google Script URL</button>
-            <button onclick="testConnection()" style="background-color: #4CAF50;">Test Connection</button>
+            <button onclick="saveAdminUrl()" style="background-color: #0d6a4e;">Save Google Script URL</button>
+            <button onclick="testConnection()" style="background-color: #0d6a4e;">Test Connection</button>
             <p id="adminStatus" style="margin-top: 10px; font-size: 12px;"></p>
         </div>
         
@@ -99,7 +99,6 @@
                             <option value="Tower A">Tower A</option>
                             <option value="Tower B">Tower B</option>
                             <option value="Tower C">Tower C</option>
-                            <option value="Tower D">Tower D</option>
                         </select>
                     </td>
                 </tr>
@@ -121,7 +120,7 @@
             </div>
             
             <div class="form-group">
-                <label for="email" class="required">Email Address</label>
+                <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" required>
             </div>
             
@@ -129,10 +128,11 @@
                 <label class="required">Sprinkler Extension Required At</label>
                 <div class="checkbox-row">
                     <label class="checkbox-item"><input type="checkbox" name="extension_location" value="Hall"> Hall</label>
-                    <label class="checkbox-item"><input type="checkbox" name="extension_location" value="Bedroom"> Bedroom</label>
+                    <label class="checkbox-item"><input type="checkbox" name="extension_location" value="Dining"> Dining</label>
                     <label class="checkbox-item"><input type="checkbox" name="extension_location" value="Kitchen"> Kitchen</label>
                     <label class="checkbox-item"><input type="checkbox" name="extension_location" value="MBR"> MBR</label>
                     <label class="checkbox-item"><input type="checkbox" name="extension_location" value="CBR"> CBR</label>
+                     <label class="checkbox-item"><input type="checkbox" name="extension_location" value="GBR"> GBR</label>
                 </div>
             </div>
             
